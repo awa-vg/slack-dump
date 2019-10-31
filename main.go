@@ -194,15 +194,18 @@ func dumpUsers(api *slack.Client, dir string) {
 			if im.User == user.ID {
 				fmt.Println("dump DM with " + user.Name)
 				dumpChannel(api, dir, im.ID, user.Name, "dm")
+				time.Sleep(2 * time.Second)
 			}
 		}
 	}
 }
 
 func dumpRooms(api *slack.Client, dir string, rooms []string) {
+	// 今回は public チャンネル対象外
 	// Dump Channels
-	fmt.Println("dump public channel")
-	channels := dumpChannels(api, dir, rooms)
+	// fmt.Println("dump public channel")
+	// channels := dumpChannels(api, dir, rooms)
+	var channels []slack.Channel
 
 	// Dump Private Groups
 	fmt.Println("dump private channel")
@@ -259,6 +262,7 @@ func dumpChannels(api *slack.Client, dir string, rooms []string) []slack.Channel
 	for _, channel := range channels {
 		fmt.Println("dump channel " + channel.Name)
 		dumpChannel(api, dir, channel.ID, channel.Name, "channel")
+		time.Sleep(2 * time.Second)
 	}
 
 	return channels
@@ -286,6 +290,7 @@ func dumpGroups(api *slack.Client, dir string, rooms []string) []slack.Group {
 	for _, group := range groups {
 		fmt.Println("dump channel (group) " + group.Name)
 		dumpChannel(api, dir, group.ID, group.Name, "group")
+		time.Sleep(2 * time.Second)
 	}
 
 	return groups
